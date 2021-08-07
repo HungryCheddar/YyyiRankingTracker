@@ -48,10 +48,10 @@ This is currently a simple test client to show that records can be fetched.
   
 
 ## Demo
-1) Open a terminal in the repository root and CD into `./DummyServer`
-2) Run `npx http-server` to host that folder on localhost:8080
-3) Open another terminal in the repository root and CD into `./src`
-4) Run `node ./host.js` to host the Host server that will server the records
-5) Open another terminal in the repository root and CD into `./src`
-6) Run `node ./Client.js` to run a Client that will get the records and print the elements of the table
-  a) Alternatively, visit `http://localhost:3000/records` to view the raw json served by Host.js
+1. Open a terminal in the repository root and CD into `./DummyServer`
+2. Run `npx http-server` to host that folder on localhost:8080
+3. Open another terminal in the repository root and CD into `./src`
+4. Run `node ./host.js` to host the Host server that will server the records
+5. Open another terminal in the repository root and CD into `./src`
+6. Run `node ./Client.js` to run a Client that will get the records and print the elements of the table
+    1. Alternatively, visit `http://localhost:3000/records` to view the raw json served by Host.js
