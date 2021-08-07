@@ -18,7 +18,7 @@ function debugLog(str)
 		console.trace(str);
 }
 
-class DataRetrieval
+export class DataRetrieval
 {
 	RetrievePage(src,cb)
 	{
