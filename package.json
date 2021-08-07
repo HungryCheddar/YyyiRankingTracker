@@ -1,0 +1,16 @@
+{
+  "name": "yuyuyui_ranking",
+  "version": "1.0.0",
+  "description": "ranking tracker",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "type": "module",
+  "author": "HC",
+  "license": "ISC",
+  "devDependencies": {
+    "jsdom": "^16.7.0",
+    "serialize-json": "^1.0.3"
+  }
+}
