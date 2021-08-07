@@ -3,30 +3,80 @@ import * as http from "http"
 import * as Timers from "timers"
 import JSDOM from "jsdom"
 import JSON from "serialize-json"
+import * as Globalize from "globalize"
 import * as assert from "assert"
 import { exit } from "process";
 
 let rank = 3;
 let table = [];
 let intervalInSeconds = 90;
-function UpdateTable(cb)
+function RetrievePage(src,cb)
 {
 	let result_str = "";
-	let req =http.request("http://r.yuyuyui.jp/campaigns/keejGeJd-may-rankingcp/result-all.html",(res)=>{ 
+	let req =http.request(src,(res)=>{ 
 		res.setEncoding('utf8');
 		res.on('data', (chunk) => {
 		  result_str += chunk;
 		});
+		
+		//Schedule a callback for when we have received all the data in result_str
 		res.on('end', () => {
-			//console.log(`"END: ${result_str}`);
+			cb(result_str);
+		});
+	});
+	req.end();
+}
+function PageToTable(pageHtml)
+{
+	let resultTable = [];
+	let test = new JSDOM.JSDOM(pageHtml);
+	//Grab the relevant table
+	let htmlTable = test.window.document.body.children[1].children[0].children[0].children[0].children[1].children[0].children[1].children;
+	//Convert the HTML table into a javascript table
+	for(let i=0;i<htmlTable.length;++i)
+	{
+		let element = htmlTable[i];	
+		//Process table entry
+		let str =element.children[1].innerHTML;
+		//Assumes form of <numbers>(<comma><numbers>)*pts
+		//let numStr = str.substr(0,str.indexOf('p'));
+		//resultTable[i]= Globalize.parseNumber(numStr);
+		//Store the table entry's text
+		resultTable[i] = str;
+	};
+	return resultTable;
+}
+
+function TableStrToNumber(strTable)
+{
+	let resultNumTable = [];
+	strTable.forEach(entry => {
+		let numStr = entry.substr(0,entry.indexOf('p'));
+		resultNumTable.push(Globalize.parseNumber(numStr));
+	});
+	return resultNumTable;
+}
+
+function UpdateTable(src,cb)
+{
+	let result_str = "";
+	let req =http.request(src,(res)=>{ 
+		res.setEncoding('utf8');
+		res.on('data', (chunk) => {
+		  result_str += chunk;
+		});
+		
+		//Schedule a callback for when we have received all the data in result_str
+		res.on('end', () => {
+			//Construct a DOM w/ the result
 			let test = new JSDOM.JSDOM(result_str);
-			//console.log(`WINDOW: ${test.window.document.body.children[1].children.length}`);
+			//Grab the relevant table
 			let htmlTable = test.window.document.body.children[1].children[0].children[0].children[0].children[1].children[0].children[1].children;
-			table = [];
+			//Convert the HTML table into a javascript table
 			for(let i=0;i<htmlTable.length;++i)
 			{
 				let element = htmlTable[i];	
-				table.push(element.children[1].innerHTML);
+				table[i]= element.children[1].innerHTML;
 			};
 			
 			cb();
@@ -116,7 +166,7 @@ function DumpRecords()
 let shouldDump =true;
 function Update()
 {
-	UpdateTable(()=>{
+	UpdateTable("http://r.yuyuyui.jp/campaigns/keejGeJd-may-rankingcp/result-all.html",()=>{
 		let override = shouldDump;
 	//if(table.length!=oldtable.length)
 	table.forEach((element,index) => {
