@@ -137,4 +137,20 @@ function TestTableStrToRecord()
 	});
 }
 
+function TestRetrieveToRecord()
+{
+	let dr = new DataRetrieval();
+	let dummyData = ["18,882,400pt","10,214,700pt","7,195,750pt","3,606,100pt","2,012,850pt"];
+	let dummyTableFromDom = (dom)=>{
+		debugLog(dom.window.document.body.children[0].children[1].children.length);
+		return dom.window.document.body.children[0].children[1].children;
+	};
+	let tableStore = [];
+	let records = [];
+	dr.GetTableFromDom=dummyTableFromDom;
+	dr.RetrieveAndRecordData("http://localhost:8080/index.html",tableStore,records,(src,tableStore,records)=>{
+		console.log(records);
+	});
+}
 TestTableStrToRecord();
+TestRetrieveToRecord();
