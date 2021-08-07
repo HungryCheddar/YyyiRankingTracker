@@ -34,6 +34,7 @@ Current requests that it serves are:
 #### Missing features
 - Backup existing records after retrieving updated data.
 - Load from backup of existing records on start up
+- Read command line for url target
 
 #### Potential features:
 - Host on the cloud (maybe Heroku?)
