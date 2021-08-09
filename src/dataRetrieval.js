@@ -84,7 +84,7 @@ export class DataRetrieval
 	
 	GetNow()
 	{
-		return new Date(Date.now()).toTimeString().substr(0,8);
+		return new Date(Date.now()).toLocaleString("en-US",{timeZone:"Asia/Tokyo",timeZoneName:"short"});
 	}
 	
 	RetrieveAndRecordData(src,tableStore, recordsOut,onChanged,overrides ={forceUpdate:false})
