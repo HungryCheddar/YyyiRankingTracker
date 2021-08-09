@@ -2,12 +2,19 @@ import Server from "server"
 import * as DR from "./dataRetrieval.js"
 import * as Timers from "timers"
 let {get,post} = Server.router;
+let header = Server.reply.header;
 
 class RecordServer
 {
 	constructor()
 	{
-		Server([
+		const cors = [
+			ctx => header("Access-Control-Allow-Origin", "*"),
+			ctx => header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"),
+			ctx => header("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE, HEAD"),
+			ctx => ctx.method.toLowerCase() === 'options' ? 200 : false
+		  ]
+		Server({},cors[0],cors[1],cors[2],cors[3],
 			get('/',(ctx)=>{
 				return {test_string:"hello_world"};
 			}),
@@ -23,7 +30,7 @@ class RecordServer
 				return result;
 			}),
 			(ctx)=>{return 404;}
-		]);
+		);
 		this.records = [];
 		this.table =[];
 	}
