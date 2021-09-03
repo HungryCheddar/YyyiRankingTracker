@@ -62,8 +62,13 @@ let rs = new RecordServer();
 
 Timers.setInterval(()=>
 {
-	dr.RetrieveAndRecordData(rs.target_url,rs.table,rs.records,(src,tableStore,records)=>{
-	rs.records = records;
-	rs.table = tableStore;
-});
+	try{
+		dr.RetrieveAndRecordData(rs.target_url,rs.table,rs.records,(src,tableStore,records)=>{
+		rs.records = records;
+		rs.table = tableStore;
+	});
+	}catch(err)
+	{
+		console.error(err);	
+	}
 },1000);
