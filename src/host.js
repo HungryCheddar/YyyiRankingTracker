@@ -157,7 +157,6 @@ let dr = new DR.DataRetrieval();
 let rs = RetrieveRecords(backupPath);
 Timers.setInterval(()=>
 {
-	console.log("Test");
 	try{
 		dr.RetrieveAndRecordData(rs.target_url,rs.table,rs.records,(src,tableStore,records)=>{
 		rs.records = records;
