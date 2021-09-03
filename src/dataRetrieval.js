@@ -156,4 +156,9 @@ function TestRetrieveToRecord(urlToSimpleTable)
 	});
 }
 TestTableStrToRecord();
+try{
 TestRetrieveToRecord("http://localhost:8080/simpleTable.html");
+}catch(err)
+{
+	console.error(err);
+}

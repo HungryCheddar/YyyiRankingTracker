@@ -62,6 +62,7 @@ let rs = new RecordServer();
 
 Timers.setInterval(()=>
 {
+	console.log("Test");
 	try{
 		dr.RetrieveAndRecordData(rs.target_url,rs.table,rs.records,(src,tableStore,records)=>{
 		rs.records = records;
@@ -70,5 +71,6 @@ Timers.setInterval(()=>
 	}catch(err)
 	{
 		console.error(err);	
+		console.log(err);
 	}
 },1000);
