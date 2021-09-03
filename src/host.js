@@ -10,13 +10,27 @@ class RecordServer
 	{
 		const cors = [
 			ctx => header("Access-Control-Allow-Origin", "*"),
-			ctx => header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"),
+			ctx => header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Content-Length, Accept"),
 			ctx => header("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE, HEAD"),
 			ctx => ctx.method.toLowerCase() === 'options' ? 200 : false
 		  ]
-		Server({},cors[0],cors[1],cors[2],cors[3],
+//TODO: handle csrf properly
+		Server({security:{csrf:false}},cors[0],cors[1],cors[2],cors[3],
 			get('/',(ctx)=>{
 				return {test_string:"hello_world"};
+			}),
+			get('/data_url',(ctx)=>{
+				console.log("Received a data_url get");
+				return {url:this.target_url};
+			}),
+			post('/data_url',(ctx)=>{
+				console.log("Received a data_url post");
+				let data =ctx.data;
+				if(!data.url)
+					this.target_url = JSON.parse(data).url;
+				else
+					this.target_url =data.url;
+				return JSON.stringify({done:true});
 			}),
 			get('/records',(ctx)=>{
 				console.log("Received a records get");
@@ -39,6 +53,8 @@ class RecordServer
 	{
 		return {table:this.records};
 	}
+	default_url = "http://localhost:8080/sample.html";
+	target_url = this.default_url;
 }
 
 let dr = new DR.DataRetrieval();
@@ -46,7 +62,7 @@ let rs = new RecordServer();
 
 Timers.setInterval(()=>
 {
-	dr.RetrieveAndRecordData("http://localhost:8080/sample.html",rs.table,rs.records,(src,tableStore,records)=>{
+	dr.RetrieveAndRecordData(rs.target_url,rs.table,rs.records,(src,tableStore,records)=>{
 	rs.records = records;
 	rs.table = tableStore;
 });
