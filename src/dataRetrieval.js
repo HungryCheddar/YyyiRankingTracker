@@ -36,6 +36,7 @@ export class DataRetrieval
 				cb(result_str);
 			});
 		});
+		req.on('error',console.error);
 		req.end();
 	}
 	GetTableFromDom(dom)
