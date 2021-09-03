@@ -4,7 +4,7 @@
   "description": "ranking tracker",
   "main": "host.js",
   "scripts": {
-    "start": "node ./host.js",
+    "start": "node ./src/host.js",
     "test": "test"
   },
   "type": "module",
