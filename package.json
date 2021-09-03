@@ -2,8 +2,9 @@
   "name": "yuyuyui_ranking",
   "version": "1.0.0",
   "description": "ranking tracker",
-  "main": "index.js",
+  "main": "host.js",
   "scripts": {
+    "start": "node ./host.js",
     "test": "test"
   },
   "type": "module",
